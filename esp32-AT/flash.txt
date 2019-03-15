@@ -1,0 +1,1 @@
+esptool.py --port <PORT> --baud 115200 write_flash --flash_size 4MB --flash_mode dio 0x1000 bootloader.bin 0x8000 partitions_at.bin 0xf000 phy_init_data.bin 0x100000 esp-at.bin
