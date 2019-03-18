@@ -8,7 +8,7 @@
     Default timeouts for ESP32 operations
  */
 #ifndef ESP32_TIMEOUT_CONNECT
-#define ESP32_TIMEOUT_CONNECT 15000
+#define ESP32_TIMEOUT_CONNECT 5000
 #endif  // ESP32_TIMEOUT_CONNECT
 
 #ifndef ESP32_TIMEOUT_RECV
