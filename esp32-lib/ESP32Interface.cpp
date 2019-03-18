@@ -342,7 +342,7 @@ nsapi_error_t ESP32Interface::scan(WiFiAccessPoint* res, unsigned int count)
  *  @brief Sets callback for connection status change
  *  @param func Callback
  */
-void ESP32Interface::attach_connection(Callback<void(nsapi_event_t, intptr_t)> func)
+void ESP32Interface::attach(Callback<void(nsapi_event_t, intptr_t)> func)
 {
     _connection_status_callback = func;
 }

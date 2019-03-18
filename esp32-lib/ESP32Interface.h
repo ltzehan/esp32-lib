@@ -39,7 +39,7 @@ public:
 
     virtual nsapi_error_t scan(WiFiAccessPoint* res, unsigned int count); // override pure function
 
-    virtual void attach_connection(Callback<void(nsapi_event_t, intptr_t)> func);
+    virtual void attach(Callback<void(nsapi_event_t, intptr_t)> func);
     virtual nsapi_connection_status_t get_connection_status(void) const;
 
 protected:
