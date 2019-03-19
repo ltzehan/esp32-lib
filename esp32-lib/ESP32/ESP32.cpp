@@ -526,7 +526,7 @@ nsapi_error_t ESP32::_socket_open(nsapi_protocol_t protocol, int id, const char*
 
     if (!done)
     {
-        tr_debug("Failed to open %s socket #%d", protocol_str, id);
+        tr_error("Failed to open %s socket #%d", protocol_str, id);
         return NSAPI_ERROR_DEVICE_ERROR;
     }
 

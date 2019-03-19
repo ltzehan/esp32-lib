@@ -102,6 +102,8 @@ nsapi_error_t ESP32Interface::set_credentials(const char* ssid, const char* pass
         }
         else
         {
+            tr_warn("Password is of invalid length");
+
             return NSAPI_ERROR_PARAMETER;
         }
     }
@@ -220,7 +222,7 @@ void ESP32Interface::_connect_async(void)
 
     if (_connect_event_id == 0)
     {
-        tr_debug("Cancelled _connect_async event");
+        tr_warn("Cancelled _connect_async event");
         _connection_mutex.unlock();
 
         return;
@@ -516,12 +518,16 @@ nsapi_error_t ESP32Interface::socket_bind(void* handle, const SocketAddress& add
             if (_socket_info[id].port == addr.get_port() && id != socket->id)
             {
                 // Socket is on same port but has different id
+                tr_warn("Another socket already bound to port");
+
                 return NSAPI_ERROR_PARAMETER;
             }
             else if (id == socket->id && socket->connected)
             {
                 // Socket is already connected
-                return NSAPI_ERROR_PARAMETER;
+                tr_warn("Socket is already connected");
+
+                return NSAPI_ERROR_ALREADY;
             }
         }
 
