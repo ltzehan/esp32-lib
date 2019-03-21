@@ -49,7 +49,7 @@ ESP32Interface::~ESP32Interface(void)
     }
     _connection_mutex.unlock();
 
-    // TODO _hw_en_pulldown();
+    _esp.hw_pulldown();
 }
 
 /**
@@ -290,8 +290,6 @@ nsapi_error_t ESP32Interface::disconnect(void)
             }
         }
     }
-
-    // TODO _hw_en_pulldown();
 
     return rc;
 }
