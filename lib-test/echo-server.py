@@ -24,8 +24,9 @@ TLS_PORT = 1002
 RECV_SIZE = 2048
 BACKLOG = 1
 
-CERT_PATH = "certs/cert.crt"
-CERT_KEY_PATH = "certs/cert.key"
+ROOT_CA_PATH = "certs/root_ca.crt"
+CERT_PATH = "certs/server_cert.crt"
+CERT_KEY_PATH = "certs/server_cert.key"
 
 #
 #   Initialization
@@ -49,7 +50,9 @@ tlssock.listen()
 
 # Configure TLS context
 tls_context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
+tls_context.verify_mode = ssl.CERT_REQUIRED
 tls_context.load_cert_chain(certfile=CERT_PATH, keyfile=CERT_KEY_PATH)
+tls_context.load_verify_locations(cafile=ROOT_CA_PATH)
 
 class UDPSocketThread(Thread):
 

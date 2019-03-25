@@ -25,7 +25,9 @@
 #define UDP_PORT 1001
 #define TLS_PORT 1002
 
-const char CERT[] = "";  // Root CA certificate
+const char ROOT_CA_CERT[] = "";  // Root CA certificate
+const char CLIENT_CERT[] = "";  // Client certificate
+const char CLIENT_KEY[] = "";  // Client private key
 
 int main() {
 
@@ -122,6 +124,9 @@ int main() {
 
     int tlssockca = tlssock->set_root_ca_cert(CERT);
     tr_info("(TLS) Setting Root CA returned %d", tlssockca);
+
+    int tlssockcli = tlssock->set_client_cert_key(CLIENT_CERT, CLIENT_KEY);
+    tr_info("(TLS) Setting client cert returned %d", tlssockcli);
 
     int tlssockopen = tlssock->open(&esp);
     tr_info("(TLS) Socket opening returned %d", tlssockopen);
