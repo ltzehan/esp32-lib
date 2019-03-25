@@ -597,7 +597,7 @@ nsapi_error_t ESP32Interface::socket_accept(void* handle, void** socket, SocketA
  *  @return Number of bytes sent if successful,
  *          negative corresponds to nsapi_error_t return code
  */
-nsapi_error_t ESP32Interface::socket_send(void* handle, const void* data, uint32_t size)
+nsapi_error_t ESP32Interface::socket_send(void* handle, const void* data, nsapi_size_t size)
 {
     ESPSocket* socket = (ESPSocket*) handle;
     if (!socket)
@@ -642,7 +642,7 @@ nsapi_error_t ESP32Interface::socket_send(void* handle, const void* data, uint32
  *  @return Number of bytes received if successful,
  *          negative corresponds to nsapi_error_t return code
  */
-nsapi_error_t ESP32Interface::socket_recv(void* handle, void* buffer, uint32_t size)
+nsapi_error_t ESP32Interface::socket_recv(void* handle, void* buffer, nsapi_size_t size)
 {
     ESPSocket* socket = (ESPSocket*) handle;
     if (!socket)
@@ -676,7 +676,7 @@ nsapi_error_t ESP32Interface::socket_recv(void* handle, void* buffer, uint32_t s
  *  @return Number of bytes sent if successful,
  *          negative corresponds to nsapi_error_t return code
  */
-nsapi_error_t ESP32Interface::socket_sendto(void* handle, const SocketAddress& addr, const void* data, uint32_t size)
+nsapi_error_t ESP32Interface::socket_sendto(void* handle, const SocketAddress& addr, const void* data, nsapi_size_t size)
 {
     ESPSocket* socket = (ESPSocket*) handle;
     if (!socket)
@@ -722,7 +722,7 @@ nsapi_error_t ESP32Interface::socket_sendto(void* handle, const SocketAddress& a
  *  @return Number of bytes received if successful,
  *          negative corresponds to nsapi_error_t return code
  */
-nsapi_error_t ESP32Interface::socket_recvfrom(void* handle, SocketAddress* addr, void* buffer, uint32_t size)
+nsapi_error_t ESP32Interface::socket_recvfrom(void* handle, SocketAddress* addr, void* buffer, nsapi_size_t size)
 {
     ESPSocket* socket = (ESPSocket*) handle;
     if (!socket)

@@ -60,10 +60,10 @@ protected:
     virtual nsapi_error_t socket_listen(void* handle, int backlog);
     virtual nsapi_error_t socket_connect(void* handle, const SocketAddress& addr);
     virtual nsapi_error_t socket_accept(void* handle, void** socket, SocketAddress* addr);
-    virtual nsapi_error_t socket_send(void* handle, const void* data, uint32_t size);
-    virtual nsapi_error_t socket_recv(void* handle, void* buffer, uint32_t size);
-    virtual nsapi_error_t socket_sendto(void* handle, const SocketAddress& addr, const void* data, uint32_t size);
-    virtual nsapi_error_t socket_recvfrom(void* handle, SocketAddress* addr, void* buffer, uint32_t size);
+    virtual nsapi_error_t socket_send(void* handle, const void* data, nsapi_size_t size);
+    virtual nsapi_error_t socket_recv(void* handle, void* buffer, nsapi_size_t size);
+    virtual nsapi_error_t socket_sendto(void* handle, const SocketAddress& addr, const void* data, nsapi_size_t size);
+    virtual nsapi_error_t socket_recvfrom(void* handle, SocketAddress* addr, void* buffer, nsapi_size_t size);
     virtual void socket_attach(void* handle, void (*callback)(void*), void* data);
 
     virtual NetworkStack* get_stack(void)
