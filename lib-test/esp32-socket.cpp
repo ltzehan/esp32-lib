@@ -27,6 +27,9 @@ int main() {
     mbed_trace_init();
     tr_info("esp32-lib socket test");
 
+    /*
+     *  ESP32 Setup
+     */
     ESP32 esp(ESP32_TX_PIN, ESP32_RX_PIN, ESP32_EN_PIN);
 
     tr_info("ESP32 power cycling...");
@@ -44,6 +47,9 @@ int main() {
 
     tr_info("ESP32 configuration %s", (esp.configure() ? "OK" : "FAILED"));
 
+    /*
+     *  WiFi connection
+     */
     int conn = esp.connect(WIFI_SSID, WIFI_PASSWORD);
     tr_info("Connection returned %d", conn);
     if (conn == 0)
@@ -58,6 +64,9 @@ int main() {
         return -1;
     }
 
+    /*
+     *  TCP Socket
+     */
     int tcpsockopen = esp.tcp_open(0, IP_ADDR, TCP_PORT);
     tr_info("(TCP) Socket opening returned %d", tcpsockopen);
 
@@ -83,6 +92,9 @@ int main() {
 
     ThisThread::sleep_for(1000);
 
+    /*
+     *  UDP Socket
+     */
     int udpsockopen = esp.udp_open(1, IP_ADDR, UDP_PORT);
     tr_info("(UDP) Socket opening returned %d", udpsockopen);
 
@@ -105,6 +117,9 @@ int main() {
         }
     }
 
+    /*
+     *  Closing
+     */
     tr_info("(TCP) Socket closing returned %d", esp.socket_close(0));
     tr_info("(UDP) Socket closing returned %d", esp.socket_close(1));
 

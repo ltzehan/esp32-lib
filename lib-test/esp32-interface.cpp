@@ -3,6 +3,7 @@
 
     - Configure port numbers in socket-server.py and run
     - Configure WiFi network parameters and IP address of device running socket-server.py
+    - Set the Root CA certificate (for the certificate in socket-server.py)
  */
 
 #include "mbed.h"
@@ -16,18 +17,24 @@
 #define ESP32_RX_PIN PC_7
 #define ESP32_EN_PIN PC_8
 
-#define WIFI_SSID // WiFi SSID
-#define WIFI_PASSWORD // WiFi Password
+#define WIFI_SSID  // WiFi SSID
+#define WIFI_PASSWORD  // WiFi Password
 
-#define IP_ADDR // IP Address
+#define IP_ADDR  // IP Address
 #define TCP_PORT 1000
 #define UDP_PORT 1001
+#define TLS_PORT 1002
+
+const char CERT[] = "";  // Root CA certificate
 
 int main() {
 
     mbed_trace_init();
     tr_info("esp32-lib ESP32Interface test");
 
+    /*
+     *  ESP32 & WiFi connection
+     */
     ESP32Interface esp(ESP32_TX_PIN, ESP32_RX_PIN, ESP32_EN_PIN);
 
     int conn = esp.connect(WIFI_SSID, WIFI_PASSWORD, NSAPI_SECURITY_WPA_WPA2);
@@ -45,6 +52,9 @@ int main() {
         return -1;
     }
 
+    /*
+     *  TCP Socket
+     */
     TCPSocket tcpsock;
 
     int tcpsockopen = tcpsock.open(&esp);
@@ -75,6 +85,9 @@ int main() {
 
     ThisThread::sleep_for(1000);
 
+    /*
+     *  UDP Socket
+     */
     UDPSocket udpsock;
 
     int udpsockopen = udpsock.open(&esp);
@@ -92,6 +105,7 @@ int main() {
         if (strcmp(udp_data, udp_buffer) != 0)
         {
             tr_error("(UDP) Sent and received data do not match, terminating program");
+            return -1;
         }
         else
         {
@@ -99,8 +113,45 @@ int main() {
         }
     }
 
+    ThisThread::sleep_for(1000);
+
+    /*
+     *  TLS Socket
+     */
+    TLSSocket* tlssock = new TLSSocket();
+
+    int tlssockca = tlssock->set_root_ca_cert(CERT);
+    tr_info("(TLS) Setting Root CA returned %d", tlssockca);
+
+    int tlssockopen = tlssock->open(&esp);
+    tr_info("(TLS) Socket opening returned %d", tlssockopen);
+
+    int tlssockconn = tlssock->connect(IP_ADDR, TLS_PORT);
+    tr_info("(TLS) Socket connection returned %d", tlssockconn);
+
+    if (tlssockopen == 0 && tlssockconn == 0)
+    {
+        // Send and echo
+        const char tls_data[20] = "tls-test";
+        char tls_buffer[20] = "";
+
+        tr_info("(TLS) Socket sending returned %d", tlssock->send(tls_data, sizeof(tls_data)));
+        tr_info("(TLS) Socket receive returned %d", tlssock->recv(tls_buffer, sizeof(tls_buffer)));
+
+        if (strcmp(tls_data, tls_buffer) != 0)
+        {
+            tr_error("(TLS) Sent and received data do not match, terminating program");
+            return -1;
+        }
+        else
+        {
+            tr_info("(TLS) Sending and receiving OK");
+        }
+    }
+
     tr_info("(TCP) Socket closing returned %d", tcpsock.close());
     tr_info("(UDP) Socket closing returned %d", udpsock.close());
+    tr_info("(TLS) Socket closing returned %d", tlssock->close());
 
     tr_info("Disconnecting returned %d", esp.disconnect());
 
